@@ -1,7 +1,7 @@
 class MoviesController < ApplicationController
 
   def new
-    @movie = Movie.new(movie_params)
+    @movie = Movie.new
   end
 
   def index
@@ -19,9 +19,9 @@ class MoviesController < ApplicationController
   end
 
   def create
-    movie_params = params.require(:movie).permit(:title, :description, :image_url)
+    #movie_params = params.require(:movie).permit(:title, :description, :image_url)
     
-    @movie = Movie.new(movie_params)
+    @movie = Movie.new(self.movie_params)
 
     if @movie.valid?
       @movie.save
@@ -39,7 +39,7 @@ class MoviesController < ApplicationController
   def update
     @movie = Movie.find(params.fetch(:id))
 
-    movie_params = params.require(:movie).permit(:title, :description,:image_url)
+    #movie_params = params.require(:movie).permit(:title, :description,:image_url)
     
     if @movie.update(movie_params)
       redirect_to @movie, notice: "Movie updated successfully."
@@ -56,7 +56,8 @@ class MoviesController < ApplicationController
     redirect_to movies_url, notice: "Movie deleted successfully."
   end
   private
+
   def movie_params
-    params.require(:movie.permit( :title, :description, :image_url, :released_on ))
+    return params.require(:movie).permit(:title, :description, :image_url, :released_on )
   end
 end
